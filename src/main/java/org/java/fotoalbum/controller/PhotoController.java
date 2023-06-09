@@ -84,4 +84,52 @@ public class PhotoController {
 
 		return "redirect:/photo";
 	}
+	
+	@GetMapping("/photo/edit/{id}")
+	public String edit(
+			@PathVariable("id") int id,
+			Model model
+		) {
+		
+		Optional<Photo> photoOpt = photoServ.findById(id);
+		Photo photo = photoOpt.get();
+		model.addAttribute("photo", photo);
+
+		return "photo_edit";
+	}
+	
+	@PostMapping("/photo/update/{id}")
+	public String update(
+			@PathVariable("id") int id,
+			@Valid @ModelAttribute Photo photo,
+			BindingResult bindingResult,
+			Model model){
+		
+		if (bindingResult.hasErrors()) {
+			
+			for (ObjectError err : bindingResult.getAllErrors()) 
+				System.err.println("error: " + err.getDefaultMessage());
+			model.addAttribute("photo", photo);
+			model.addAttribute("errors", bindingResult);
+			
+			return "photo_edit";
+		}
+
+		photoServ.save(photo);
+
+		return "redirect:/photo";
+	}
+	
+	@GetMapping("/photo/delete/{id}")
+	public String delete(
+			@PathVariable("id") int id
+		) {
+
+		Optional<Photo> photoOpt = photoServ.findById(id);
+		Photo photo = photoOpt.get();
+		
+		photoServ.delete(photo);
+
+		return "redirect:/photo";
+	}
 }

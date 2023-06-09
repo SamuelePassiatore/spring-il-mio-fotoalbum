@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}"/>
+<title>Modifica una foto</title>
+</head>
+<body class="p-4" th:object="${photo}">
+	<h1>Modifica una foto</h1>
+	<form method="POST" th:action="@{/photo/update/{id} (id=*{id})}">
+		<div class="pb-2">
+			<label for="photo-title">Titolo</label>
+			<input id="photo-title" type="text" name="title" th:value="*{title}">
+			<label 
+			style="color: red"
+			th:if="${errors != null && errors.hasFieldErrors('title')}"
+			>
+			[[ ${errors.getFieldError('title').defaultMessage} ]]
+			</label>
+		</div>
+		<div class="pb-2">
+			<label for="photo-description">Descrizione</label>
+			<input id="photo-description" type="text" name="description" th:value="*{description}">
+			<label 
+			style="color: red"
+			th:if="${errors != null && errors.hasFieldErrors('description')}"
+			>
+			[[ ${errors.getFieldError('description').defaultMessage} ]]
+			</label>
+		</div>
+		<div class="pb-2">
+			<label for="photo-url">Url</label>
+			<input id="photo-url" type="url" name="url" th:value="*{url}">
+			<label 
+			style="color: red"
+			th:if="${errors != null && errors.hasFieldErrors('url')}"
+			>
+			[[ ${errors.getFieldError('url').defaultMessage} ]]
+			</label>
+		</div>
+		<div class="form-check form-switch pb-2">
+		  <label class="form-check-label" for="flexSwitchCheckChecked">Disponibile: </label>
+		  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked name="visible" th:value="*{visible}">
+		  <label
+		  style="color: red"
+		  th:if="${errors != null && errors.hasFieldErrors('visible')}"
+		  >
+		  [[ ${errors.getFieldError('visible').defaultMessage} ]]
+		  </label>
+		</div>
+
+		<input class="btn btn-small btn-secondary" type="submit" value="Modifica">
+		<a class="btn btn-small btn-white border border-dark b-2" th:href="@{/photo}">Torna indietro</a>
+	</form>
+</body>
+</html>

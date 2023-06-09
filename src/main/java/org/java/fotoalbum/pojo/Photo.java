@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Photo {
@@ -12,9 +14,13 @@ public class Photo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@NotBlank(message = "Il campo titolo non può essere nullo!")
 	private String title;
+	@NotBlank(message = "Il campo descrizione non può essere nullo!")
 	private String description;
+	@NotBlank(message = "Il campo url non può essere nullo!")
 	private String url;
+	@NotNull(message = "Il campo disponibilità non può essere nullo!")
 	private boolean visible;
 	
 	 public Photo() { }

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}"/>
+    <title>Il tuo foto album</title>
+</head>
+<body class="p-2 text-center" th:object="${photo}">
+	<div class="pb-5">
+		<a class="nav-link active text-danger text-center pb-5 pt-3" th:href="@{/photo}">Torna alla lista!</a>
+		<h1 class="pb-2">[[ *{title} ]]</h1>
+		<img style="height: 200px;" th:alt="*{title}" th:src="*{url}" class="mb-4">
+		<p><span class="fw-bold">Descrizione: </span>[[ *{description} ]]</p>
+		<span class="fw-bold">Disponibile: </span>
+		<span>[[ *{visibleText} ]]</span>
+	</div>
+</body>
+</html>

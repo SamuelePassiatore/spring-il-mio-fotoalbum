@@ -55,6 +55,9 @@ public class Photo {
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
+	public String getVisibleText() {
+	    return visible ? "Si" : "No";
+	}
 	
 	@Override
 	public String toString() {

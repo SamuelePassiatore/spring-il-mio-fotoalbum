@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class PhotoController {
@@ -20,6 +22,16 @@ public class PhotoController {
 		List<Photo> photoList = photoServ.findAll();
 		
 		model.addAttribute("photoList", photoList);
+
+		return "photo_index";
+	}
+	
+	@PostMapping("/photo/filter")
+	public String filterPhoto(Model model, @RequestParam(required = false) String title) {
+
+		List<Photo> photoList = photoServ.findByTitle(title);
+		model.addAttribute("photoList", photoList);
+		model.addAttribute("title", title);
 
 		return "photo_index";
 	}

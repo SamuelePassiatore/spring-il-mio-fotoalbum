@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="ISO-8859-1">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}"/>
+	<title>Lista categorie</title>
+</head>
+<body class="p-4">
+	<h1>Categorie:</h1>
+	<a class="btn btn-small btn-success my-4" th:href="@{/categories/create}">Crea una categoria</a>
+	<a class="btn btn-small btn-white border border-dark b-2" th:href="@{/photo}">Torna indietro</a>
+	<div th:if="${categories.isEmpty()}">
+		Non ci sono categorie qui.
+	</div>
+	<ul>
+		<li class="pb-4"
+			th:each="category : ${categories}"
+			th:object="${category}"
+		>
+			[[ *{name} ]]
+			<a class="btn btn-small btn-danger" th:href="@{/categories/delete/{id} (id = *{id})}">Elimina</a>
+		</li>
+	</ul>	
+</body>
+</html>

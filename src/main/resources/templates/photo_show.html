@@ -15,6 +15,13 @@
 		<h1 class="pb-2">[[ *{title} ]]</h1>
 		<img style="height: 200px;" th:alt="*{title}" th:src="*{url}" class="mb-4">
 		<p><span class="fw-bold">Descrizione: </span>[[ *{description} ]]</p>
+		<div class="mb-3">
+		    <span class="fw-bold">Categorie: </span>
+		    <span th:each="category, status : ${categories}" th:object="${category}">
+		        <span th:text="*{name}"></span>
+		        <span th:if="${!status.last}">,</span>
+		    </span>
+		</div>
 		<span class="fw-bold">Disponibile: </span>
 		<span>[[ *{visibleText} ]]</span>
 	</div>

@@ -49,6 +49,10 @@
 		  [[ ${errors.getFieldError('visible').defaultMessage} ]]
 		  </label>
 		</div>
+		<div th:each="category : ${categories}" th:object="${category}">
+			<input th:id="${'category-' + category.id}" type="checkbox" th:value="*{id}" name="categories" th:checked="${photo.categories.contains(category)}">
+			<label th:id="${'category-' + category.id}">[[ *{name} ]]</label>
+		</div>
 
 		<input class="btn btn-small btn-secondary" type="submit" value="Modifica">
 		<a class="btn btn-small btn-white border border-dark b-2" th:href="@{/photo}">Torna indietro</a>

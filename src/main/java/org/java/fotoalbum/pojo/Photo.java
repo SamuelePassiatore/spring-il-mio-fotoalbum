@@ -1,9 +1,15 @@
 package org.java.fotoalbum.pojo;
 
+import java.util.Arrays;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -23,14 +29,40 @@ public class Photo {
 	@NotNull(message = "Il campo disponibilità non può essere nullo!")
 	private boolean visible;
 	
-	 public Photo() { }
-	 public Photo(String title, String description, String url, boolean visible) {
+	@ManyToMany
+	@JsonManagedReference
+	private List<Category> categories;
+	
+	public Photo() { }
+	public Photo(String title, String description, String url, boolean visible) {
     	setTitle(title);
     	setDescription(description);
     	setUrl(url);
     	setVisible(visible);
-	 }
+	}
+	
+	public Photo(String title, String description, String url, Boolean visible, Category... categories) {
+		setTitle(title);
+    	setDescription(description);
+    	setUrl(url);
+    	setVisible(visible);
+    	
+		setCategories(categories);
+	}
 	 
+	public List<Category> getCategories() {
+		return categories;
+	}
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
+	}
+	public void setCategories(Category[] categories) {
+		setCategories(Arrays.asList(categories));
+	}
+	public void removeCategory(Category category) {
+		getCategories().remove(category);		
+	}
+	
 	public int getId() {
 		return id;
 	}

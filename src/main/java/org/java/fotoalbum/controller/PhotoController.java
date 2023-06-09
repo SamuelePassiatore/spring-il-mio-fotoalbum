@@ -3,8 +3,10 @@ package org.java.fotoalbum.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.java.fotoalbum.pojo.Category;
 import org.java.fotoalbum.pojo.Photo;
 import org.java.fotoalbum.serv.PhotoServ;
+import org.java.fotoalbum.serv.CategoryServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,9 @@ public class PhotoController {
 	
 	@Autowired
 	private PhotoServ photoServ;
+	
+	@Autowired
+	private CategoryServ categoryServ;
 	
 	@GetMapping("/photo")
 	public String index(Model model){
@@ -49,15 +54,19 @@ public class PhotoController {
 		Optional<Photo> optPhoto = photoServ.findById(id);
 		Photo photo = optPhoto.get();
 		
+		List<Category> categories = photo.getCategories();
 		model.addAttribute("photo", photo);
+		model.addAttribute("categories", categories);
 		
 		return "photo_show";
 	}
 	
 	@GetMapping("/photo/create")
 	public String create(Model model) {
+		List<Category> categories = categoryServ.findAll();
 				
 		model.addAttribute("photo", new Photo());
+		model.addAttribute("categories", categories);
 		
 		return "photo_create";
 	}
@@ -90,10 +99,12 @@ public class PhotoController {
 			@PathVariable("id") int id,
 			Model model
 		) {
+		List<Category> categories = categoryServ.findAll();
 		
 		Optional<Photo> photoOpt = photoServ.findById(id);
 		Photo photo = photoOpt.get();
 		model.addAttribute("photo", photo);
+		model.addAttribute("categories", categories);
 
 		return "photo_edit";
 	}

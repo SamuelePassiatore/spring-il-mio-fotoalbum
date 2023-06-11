@@ -1,5 +1,6 @@
 <script>
 import PhotoComp from '../PhotoComp.vue';
+import ContactComp from '../ContactComp.vue';
 import axios from 'axios';
 const BASE_API_URL = "http://localhost:8080/api/v1";
 
@@ -12,7 +13,7 @@ export default {
         }
     },
     components: {
-        PhotoComp
+        PhotoComp, ContactComp
     },
     methods: {
         getPhotos() {
@@ -50,6 +51,7 @@ export default {
         <p v-if="filteredPhoto.length === 0" class="text-danger pt-4">Nessuna foto trovata con questo titolo.</p>
         <PhotoComp class="p-2" v-for="photo in filteredPhoto" :photo="photo" />
     </div>
+    <ContactComp />
 </template>
 
 <style scoped></style>

@@ -15,7 +15,7 @@ public class Contact {
 	private int id;
 	
 	@NotBlank(message = "Il campo email non può essere nullo!")
-	@Email 
+	@Email(message= "Il campo deve contenere un indirizzo mail valido!")
 	private String email;
 	
 	@NotBlank(message = "Il campo messaggio non può essere nullo!")

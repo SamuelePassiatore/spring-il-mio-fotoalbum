@@ -9,9 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vee-validate/rules": "^4.9.6",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.0",
     "sass": "^1.63.3",
+    "vee-validate": "^4.5.8",
     "vue": "^3.2.47",
     "vue-router": "^4.2.2"
   },

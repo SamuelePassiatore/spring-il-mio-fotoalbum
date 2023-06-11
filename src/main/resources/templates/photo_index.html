@@ -10,36 +10,38 @@
     <title>Il tuo foto album</title>
 </head>
 <body class="p-2 text-center">
-	<div class="d-flex justify-content-center">
+	<div class="d-flex justify-content-center my-3">
 		<a class="btn btn-small btn-primary me-2" th:href="@{/login}" sec:authorize="!isAuthenticated()">Login</a>
 		<a class="btn btn-small btn-danger" th:href="@{/logout}" sec:authorize="isAuthenticated()">Logout</a>
 	</div>	
-    <h1 class="pb-3">Il tuo foto album</h1>
-	<form th:action="@{/photo/filter}" method="POST" class="pb-3">
-		<label for="photo-title">Titolo foto</label>
-		<input id="photo-title" type="text" name="title" th:value="${title}">
-		<input class="btn btn-small btn-primary" type="submit" value="Cerca">
-	</form>
-	<div class="d-flex justify-content-center mb-3">
-    	<a class="btn btn-small btn-success" th:href="@{/photo/create}">Aggiungi una foto</a>
-    	<a class="btn btn-small btn-warning ms-2" th:href="@{/categories}">Categorie Foto</a>
-    </div>
-    <div class="row g-3 px-5 py-3">
-	    <div class="col-4" th:each="photo : ${photoList}">
-	        <div class="card" th:object="${photo}">
-	            <img class="card-img-top object-fit-cover" style="height: 200px;" th:alt="${photo.title}" th:src="${photo.url}">
-	            <div class="card-body">
-	                <a class="text-decoration-none fw-bold d-block pb-3" th:href="@{/photo/{id}(id=${photo.id})}">
-	                    [[${photo.title}]]
-	                </a>
-	                <a class="btn btn-small btn-warning" th:href="@{/photo/edit/{id}(id=${photo.id})}">Modifica</a>
-	                <a class="pe-3 btn btn-small btn-danger" th:href="@{/photo/delete/{id}(id=${photo.id})}">Elimina</a>
-	            </div>
-	        </div>
+	<div sec:authorize="hasAuthority('ADMIN')">
+		<h1 class="pb-3">Il tuo foto album</h1>
+		<form th:action="@{/photo/filter}" method="POST" class="pb-3">
+			<label for="photo-title">Titolo foto</label>
+			<input id="photo-title" type="text" name="title" th:value="${title}">
+			<input class="btn btn-small btn-primary" type="submit" value="Cerca">
+		</form>
+		<div class="d-flex justify-content-center mb-3">
+	    	<a class="btn btn-small btn-success" th:href="@{/photo/create}">Aggiungi una foto</a>
+	    	<a class="btn btn-small btn-warning ms-2" th:href="@{/categories}">Categorie Foto</a>
 	    </div>
-	    <div class="col-4" th:if="${photoList.isEmpty()}">
-	        Non ci sono foto disponibili al momento.
-	    </div>
+	    <div class="row g-3 px-5 py-3">
+		    <div class="col-4" th:each="photo : ${photoList}">
+		        <div class="card" th:object="${photo}">
+		            <img class="card-img-top object-fit-cover" style="height: 200px;" th:alt="${photo.title}" th:src="${photo.url}">
+		            <div class="card-body">
+		                <a class="text-decoration-none fw-bold d-block pb-3" th:href="@{/photo/{id}(id=${photo.id})}">
+		                    [[${photo.title}]]
+		                </a>
+		                <a class="btn btn-small btn-warning" th:href="@{/photo/edit/{id}(id=${photo.id})}">Modifica</a>
+		                <a class="pe-3 btn btn-small btn-danger" th:href="@{/photo/delete/{id}(id=${photo.id})}">Elimina</a>
+		            </div>
+		        </div>
+		    </div>
+		    <div class="col-4" th:if="${photoList.isEmpty()}">
+		        Non ci sono foto disponibili al momento.
+		    </div>
+		</div>
 	</div>
 </body>
 </html>

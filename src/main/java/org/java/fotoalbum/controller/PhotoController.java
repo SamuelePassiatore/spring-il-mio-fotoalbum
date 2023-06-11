@@ -29,6 +29,11 @@ public class PhotoController {
 	@Autowired
 	private CategoryServ categoryServ;
 	
+	@GetMapping("/")
+	public String home() {
+		return "home";
+	}
+	
 	@GetMapping("/photo")
 	public String index(Model model){
 		List<Photo> photoList = photoServ.findAll();

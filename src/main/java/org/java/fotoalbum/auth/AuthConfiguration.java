@@ -26,7 +26,7 @@ public class AuthConfiguration {
 			        .requestMatchers("/**").permitAll()
 			        .requestMatchers("/**", "/api/**").permitAll()
 			).formLogin(f -> f.permitAll()
-			).logout(l -> l.logoutSuccessUrl("/login")
+			).logout(l -> l.logoutSuccessUrl("/")
 			).build();
 	}
 }

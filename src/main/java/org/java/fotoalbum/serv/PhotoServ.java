@@ -34,6 +34,10 @@ public class PhotoServ {
 		return photoRepo.findByTitleContaining(title);
 	}
 	
+	public List<Photo> findByVisibleTrue(){
+		return photoRepo.findByVisibleTrue();
+	}
+	
 	public void delete(Photo photo) {
 		
 		photoRepo.delete(photo);

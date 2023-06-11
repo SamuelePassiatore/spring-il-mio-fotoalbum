@@ -21,10 +21,10 @@ public class AuthConfiguration {
 		return 
 			http.csrf(c -> c.disable())
 			.authorizeHttpRequests(a -> a
-			        .requestMatchers("*/photo/**").hasAuthority("ADMIN")
-			        .requestMatchers("*/categories/**").hasAuthority("ADMIN")
+			        .requestMatchers("/photo/**").hasAuthority("ADMIN")
+			        .requestMatchers("/categories/**").hasAuthority("ADMIN")
 			        .requestMatchers("/**").permitAll()
-			        .requestMatchers("/**", "/api/**").permitAll()
+			        .requestMatchers("/api/**").permitAll()
 			).formLogin(f -> f.permitAll()
 			).logout(l -> l.logoutSuccessUrl("/")
 			).build();

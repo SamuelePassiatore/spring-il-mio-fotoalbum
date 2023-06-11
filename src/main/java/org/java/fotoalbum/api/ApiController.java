@@ -28,7 +28,7 @@ public class ApiController {
         	return new ResponseEntity<>(photos, HttpStatus.OK);
         }
         
-        List<Photo> photos = photoServ.findAll();
+        List<Photo> photos = photoServ.findByVisibleTrue();
 		return new ResponseEntity<>(photos, HttpStatus.OK);
     }
 }

@@ -7,7 +7,7 @@
 <title>Modifica una foto</title>
 </head>
 <body class="p-4" th:object="${photo}">
-	<h1>Modifica una foto</h1>
+	<h1 class="pb-2">Modifica una foto</h1>
 	<form method="POST" th:action="@{/photo/update/{id} (id=*{id})}">
 		<div class="pb-2">
 			<label for="photo-title">Titolo</label>
@@ -19,9 +19,9 @@
 			[[ ${errors.getFieldError('title').defaultMessage} ]]
 			</label>
 		</div>
-		<div class="pb-2">
-			<label for="photo-description">Descrizione</label>
-			<input id="photo-description" type="text" name="description" th:value="*{description}">
+		<div class="pb-2 d-flex align-items-center">
+			<label for="photo-description" class="pe-2">Descrizione</label>
+			<textarea id="photo-description" cols="100" name="description">[[*{description}]]</textarea>
 			<label 
 			style="color: red"
 			th:if="${errors != null && errors.hasFieldErrors('description')}"
@@ -40,8 +40,8 @@
 			</label>
 		</div>
 		<div class="form-check form-switch pb-2">
-		  <label class="form-check-label" for="flexSwitchCheckChecked">Disponibile: </label>
-		  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked name="visible" th:value="*{visible}">
+		  <label class="form-check-label" for="photo-visible">Disponibile: </label>
+		  <input class="form-check-input" type="checkbox" role="switch" id="photo-visible" name="visible" th:checked="*{visible}">
 		  <label
 		  style="color: red"
 		  th:if="${errors != null && errors.hasFieldErrors('visible')}"
@@ -49,9 +49,9 @@
 		  [[ ${errors.getFieldError('visible').defaultMessage} ]]
 		  </label>
 		</div>
-		<div th:each="category : ${categories}" th:object="${category}">
+		<div th:each="category : ${categories}" th:object="${category}" class="mb-3">
 			<input th:id="${'category-' + category.id}" type="checkbox" th:value="*{id}" name="categories" th:checked="${photo.categories.contains(category)}">
-			<label th:id="${'category-' + category.id}">[[ *{name} ]]</label>
+			<label th:id="${'category-' + category.id}">[[ *{name} ]]</label> 
 		</div>
 
 		<input class="btn btn-small btn-secondary" type="submit" value="Modifica">

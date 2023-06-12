@@ -2,6 +2,7 @@ package org.java.fotoalbum;
 
 import org.java.fotoalbum.auth.RoleServ;
 import org.java.fotoalbum.auth.UserServ;
+
 import org.java.fotoalbum.auth.Role;
 import org.java.fotoalbum.auth.User;
 import org.java.fotoalbum.pojo.Photo;
@@ -65,6 +66,15 @@ public class SpringIlMioFotoalbumApplication implements CommandLineRunner {
 		User userAdmin = new User("admin", psw, adminRole);
 
 		userServ.save(userAdmin);
+		
+		
+		Role superAdmin = new Role("SUPERADMIN");
+        roleServ.save(superAdmin);	
+        final String password = new BCryptPasswordEncoder().encode("boss");
+
+        User boss = new User("boss", password, superAdmin);
+        userServ.save(boss);
+		
 	}
 
 }

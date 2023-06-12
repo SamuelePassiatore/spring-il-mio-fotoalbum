@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.java.fotoalbum.pojo.Category;
 import org.java.fotoalbum.pojo.Photo;
+import org.java.fotoalbum.auth.User;
 import org.java.fotoalbum.serv.PhotoServ;
 import org.java.fotoalbum.serv.CategoryServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import jakarta.validation.Valid;
 
@@ -36,7 +40,17 @@ public class PhotoController {
 	
 	@GetMapping("/photo")
 	public String index(Model model){
-		List<Photo> photoList = photoServ.findAll();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();
+		int userId = user.getId();
+		
+		List<Photo> photoList;
+		
+		if (userId == 1) { 
+	        photoList = photoServ.findAll();
+	    } else {
+	        photoList = photoServ.findByUserId(userId);
+	    }
 		
 		model.addAttribute("photoList", photoList);
 
@@ -45,8 +59,17 @@ public class PhotoController {
 	
 	@PostMapping("/photo/filter")
 	public String filterPhoto(Model model, @RequestParam(required = false) String title) {
-
-		List<Photo> photoList = photoServ.findByTitle(title);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();
+		int userId = user.getId();
+		List<Photo> photoList;
+		
+		if (userId == 1) {
+	        photoList = photoServ.findByTitle(title);
+	    } else {
+	        photoList = photoServ.findByTitleAndUserId(title, userId);
+	    }
+		
 		model.addAttribute("photoList", photoList);
 		model.addAttribute("title", title);
 
@@ -59,6 +82,14 @@ public class PhotoController {
 		Optional<Photo> optPhoto = photoServ.findById(id);
 		Photo photo = optPhoto.get();
 		
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    User user = (User) authentication.getPrincipal();
+	    int userId = user.getId();
+		
+	    if (userId != 1 && photo.getUser().getId() != userId) {
+	        return "redirect:/photo";
+	    }
+	    
 		List<Category> categories = photo.getCategories();
 		model.addAttribute("photo", photo);
 		model.addAttribute("categories", categories);
@@ -94,7 +125,10 @@ public class PhotoController {
 			
 		}
 		
-		photoServ.save(photo);
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    User user = (User) authentication.getPrincipal();
+	    photo.setUser(user);
+	    photoServ.save(photo);
 
 		return "redirect:/photo";
 	}
@@ -130,8 +164,11 @@ public class PhotoController {
 			
 			return "photo_edit";
 		}
-
-		photoServ.save(photo);
+		
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    User user = (User) authentication.getPrincipal();
+	    photo.setUser(user);
+	    photoServ.save(photo);
 
 		return "redirect:/photo";
 	}
@@ -144,6 +181,9 @@ public class PhotoController {
 		Optional<Photo> photoOpt = photoServ.findById(id);
 		Photo photo = photoOpt.get();
 		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    User user = (User) authentication.getPrincipal();
+	    photo.setUser(user);
 		photoServ.delete(photo);
 
 		return "redirect:/photo";

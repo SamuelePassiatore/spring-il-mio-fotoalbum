@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}"/>
+<title>Crea user</title>
+</head>
+<body class="p-4" th:object="${photo}">
+	<h1 class="pb-2">Crea un nuovo utente</h1>
+	<form method="POST" th:action="@{/user/store}" th:object="${user}" >
+		<div class="pb-2">
+			<label for="username">Username</label>
+			<input id="username" type="text" name="username" th:value="*{username}">
+			<label 
+			style="color: red"
+			th:if="${errors != null && errors.hasFieldErrors('username')}"
+			>
+			[[ ${errors.getFieldError('username').defaultMessage} ]]
+			</label>
+		</div>
+		<div class="pb-2">
+			<label for="password">Password</label>
+			<input id="password" type="password" name="password" th:value="*{password}">
+			<label 
+			style="color: red"
+			th:if="${errors != null && errors.hasFieldErrors('password')}"
+			>
+			[[ ${errors.getFieldError('password').defaultMessage} ]]
+			</label>
+		</div>
+		<div th:if="${successMessage}">
+		    <p class="text-success fw-bold" th:text="${successMessage}"></p>
+		</div>
+		<input class="btn btn-small btn-secondary" type="submit" value="Crea un nuovo utente">
+		<a class="btn btn-small btn-white border border-dark b-2" th:href="@{/}">Torna indietro</a>
+	</form>
+</body>
+</html>

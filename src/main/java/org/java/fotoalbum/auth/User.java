@@ -3,8 +3,10 @@ package org.java.fotoalbum.auth;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.java.fotoalbum.pojo.Photo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,8 +17,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 @SuppressWarnings("serial")
 @Entity
@@ -26,14 +28,15 @@ public class User implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@NotNull
-	@NotBlank
+	@NotBlank(message = "Il campo username non può essere nullo!")
 	private String username;
 
-	@NotNull
-	@NotBlank
+	@NotBlank(message = "Il campo password non può essere nullo!")
 	private String password;
-
+	
+	@OneToMany(mappedBy = "user")
+	private List<Photo> photos;
+		
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Role> roles;
 
@@ -103,7 +106,15 @@ public class User implements UserDetails {
 	public void setRole(Role[] roles) {
 
 		setRoles(new HashSet<>(Arrays.asList(roles)));
-	}
+	}	
+	
+	public List<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
+    }
 
 	@Override
 	public String toString() {

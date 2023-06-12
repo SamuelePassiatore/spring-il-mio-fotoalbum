@@ -12,7 +12,12 @@
 <title>HomePage</title>
 </head>
 <body class="p-2">
-	<h1 class="text-center">Home</h1>
-	<a class="nav-link active text-danger text-center pt-2" th:href="@{/photo}">Clicca qui per vedere il tuo fotoalbum!</a>
+	<div class="d-flex flex-column align-items-center">	
+		<h1>HomePage</h1>
+		<div class="d-flex mt-3">
+			<a class="btn btn-small btn-success me-2" href="/user/create">Registrati</a>
+			<a class="btn btn-small btn-primary" th:href="@{/photo}">Login</a>
+		</div>
+	</div>
 </body>
 </html>

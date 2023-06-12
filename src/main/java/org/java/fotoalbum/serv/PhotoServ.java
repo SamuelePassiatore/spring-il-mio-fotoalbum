@@ -38,6 +38,14 @@ public class PhotoServ {
 		return photoRepo.findByVisibleTrue();
 	}
 	
+	public List<Photo> findByUserId(int userId) {
+	    return photoRepo.findByUserId(userId);
+	}
+	
+	public List<Photo> findByTitleAndUserId(String title, int userId) {
+		return photoRepo.findByTitleAndUserId(title, userId);
+	}
+	
 	public void delete(Photo photo) {
 		
 		photoRepo.delete(photo);

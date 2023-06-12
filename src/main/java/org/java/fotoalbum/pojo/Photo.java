@@ -3,13 +3,17 @@ package org.java.fotoalbum.pojo;
 import java.util.Arrays;
 import java.util.List;
 
+import org.java.fotoalbum.auth.User;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -32,6 +36,10 @@ public class Photo {
 	@ManyToMany
 	@JsonManagedReference
 	private List<Category> categories;
+	
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 	
 	public Photo() { }
 	public Photo(String title, String description, String url, boolean visible) {
@@ -96,7 +104,14 @@ public class Photo {
 	public String getVisibleText() {
 	    return visible ? "Si" : "No";
 	}
-	
+	public User getUser() {
+	    return user;
+	}
+
+	public void setUser(User user) {
+	    this.user = user;
+	}
+	 
 	@Override
 	public String toString() {
 		
@@ -106,4 +121,5 @@ public class Photo {
 				+ "\nUrl: " + getUrl()
 				+ "\nVisibile: " + isVisible();
 	}
+
 }

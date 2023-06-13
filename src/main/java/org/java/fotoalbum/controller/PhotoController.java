@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -43,10 +43,11 @@ public class PhotoController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User user = (User) authentication.getPrincipal();
 		int userId = user.getId();
+		String username = user.getUsername();
 		
 		List<Photo> photoList;
 		
-		if (userId == 1) { 
+		if (userId == 1 || "superadmin".equals(username)) { 
 	        photoList = photoServ.findAll();
 	    } else {
 	        photoList = photoServ.findByUserId(userId);
@@ -187,5 +188,22 @@ public class PhotoController {
 		photoServ.delete(photo);
 
 		return "redirect:/photo";
+	}
+	
+	@PreAuthorize("hasAuthority('SUPERADMIN')")
+	@PostMapping("/photo/updateVisibility/{id}")
+	public String updateVisibility(@PathVariable("id") int id) {
+		
+		Optional<Photo> photoOpt = photoServ.findById(id);
+		if (photoOpt.isPresent()) {
+		    Photo photo = photoOpt.get();
+		    
+		    boolean currentVisibility = photo.isVisible();
+		    photo.setVisible(!currentVisibility);
+		    
+		    photoServ.save(photo);
+		}
+	    
+	    return "redirect:/photo";
 	}
 }

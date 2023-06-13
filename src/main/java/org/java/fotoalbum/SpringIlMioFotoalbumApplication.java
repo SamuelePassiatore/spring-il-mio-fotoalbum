@@ -70,10 +70,10 @@ public class SpringIlMioFotoalbumApplication implements CommandLineRunner {
 		
 		Role superAdmin = new Role("SUPERADMIN");
         roleServ.save(superAdmin);	
-        final String password = new BCryptPasswordEncoder().encode("boss");
+        final String password = new BCryptPasswordEncoder().encode("superadmin");
 
-        User boss = new User("boss", password, superAdmin);
-        userServ.save(boss);
+        User superadmin = new User("superadmin", password, superAdmin);
+        userServ.save(superadmin);
 		
 	}
 

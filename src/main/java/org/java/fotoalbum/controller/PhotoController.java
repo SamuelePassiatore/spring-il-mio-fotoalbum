@@ -47,7 +47,7 @@ public class PhotoController {
 		
 		List<Photo> photoList;
 		
-		if (userId == 1 || "superadmin".equals(username)) { 
+		if ("superadmin".equals(username)) { 
 	        photoList = photoServ.findAll();
 	    } else {
 	        photoList = photoServ.findByUserId(userId);
@@ -63,9 +63,10 @@ public class PhotoController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User user = (User) authentication.getPrincipal();
 		int userId = user.getId();
+		String username = user.getUsername();
 		List<Photo> photoList;
 		
-		if (userId == 1) {
+		if ("superadmin".equals(username)) {
 	        photoList = photoServ.findByTitle(title);
 	    } else {
 	        photoList = photoServ.findByTitleAndUserId(title, userId);
@@ -86,9 +87,10 @@ public class PhotoController {
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    User user = (User) authentication.getPrincipal();
 	    int userId = user.getId();
+	    String username = user.getUsername();
 		
-	    if (userId != 1 && photo.getUser().getId() != userId) {
-	        return "redirect:/photo";
+	    if (photo.getUser().getId() != userId && !("superadmin".equals(username))) {
+	        return "redirect:/error";
 	    }
 	    
 		List<Category> categories = photo.getCategories();
@@ -100,8 +102,17 @@ public class PhotoController {
 	
 	@GetMapping("/photo/create")
 	public String create(Model model) {
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    User user = (User) authentication.getPrincipal();
+	    int userId = user.getId();
+		String username = user.getUsername();
+		
 		List<Category> categories = categoryServ.findAll();
 				
+		if ("superadmin".equals(username)) {
+	        return "redirect:/error";
+	    }
+		
 		model.addAttribute("photo", new Photo());
 		model.addAttribute("categories", categories);
 		
@@ -139,6 +150,15 @@ public class PhotoController {
 			@PathVariable("id") int id,
 			Model model
 		) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    User user = (User) authentication.getPrincipal();
+	    int userId = user.getId();
+		String username = user.getUsername();
+		
+		if ("superadmin".equals(username)) {
+	        return "redirect:/error";
+	    }
+		
 		List<Category> categories = categoryServ.findAll();
 		
 		Optional<Photo> photoOpt = photoServ.findById(id);
@@ -185,6 +205,12 @@ public class PhotoController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    User user = (User) authentication.getPrincipal();
 	    photo.setUser(user);
+		String username = user.getUsername();
+	    
+	    if ("superadmin".equals(username)) {
+	        return "redirect:/error";
+	    }
+	    
 		photoServ.delete(photo);
 
 		return "redirect:/photo";
